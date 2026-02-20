@@ -2,20 +2,50 @@ document.getElementById("formDisponibilidad")
 .addEventListener("submit", function(e) {
   e.preventDefault();
 
-  const formData = new FormData(this);
-  const data = Object.fromEntries(formData.entries());
+  const dias = [
+  "Martes Mañana",
+  "Martes Tarde",
+  "Jueves Mañana",
+  "Jueves Tarde",
+  "Viernes Mañana",
+  "Viernes Tarde",
+  "Sábado Mañana",
+  "Domingo Mañana"
+];
 
-  // Convertir checkboxes no marcados a false
-  const checkboxes = [
-    "mar_manana","mar_tarde",
-    "jue_manana","jue_tarde",
-    "vie_manana","vie_tarde",
-    "sab_manana","dom_manana"
-  ];
+const baseGrid = document.getElementById("baseGrid");
 
-  checkboxes.forEach(c => {
-    data[c] = data[c] ? true : false;
+dias.forEach(d => {
+  const div = document.createElement("div");
+  div.className = "toggle";
+  div.innerHTML = `<span>${d}</span>`;
+  div.onclick = () => div.classList.toggle("active");
+  baseGrid.appendChild(div);
+});
+
+function addException(){
+  const container = document.getElementById("exceptionsContainer");
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <input type="week" class="weekSelector">
+    <div class="grid"></div>
+  `;
+
+  const grid = card.querySelector(".grid");
+
+  dias.forEach(d => {
+    const div = document.createElement("div");
+    div.className = "toggle";
+    div.innerHTML = `<span>${d}</span>`;
+    div.onclick = () => div.classList.toggle("active");
+    grid.appendChild(div);
   });
+
+  container.appendChild(card);
+}
 
   fetch("https://script.google.com/macros/s/AKfycbzCJhZ4f9kBKWoIm-H05zuWe0RHkf1lUvOwXaAYYv30CXRRWEya8WEGj1Wlk6-McNRuEg/exec", {
     method: "POST",
