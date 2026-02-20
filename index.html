@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disponibilidad Anual</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Formulario de Disponibilidad</h1>
+  <form id="formDisponibilidad">
+    
+    <input type="text" name="nombre" placeholder="Nombre completo" required>
+    <input type="email" name="email" placeholder="Correo electrónico" required>
+
+    <h2>Selecciona tu disponibilidad</h2>
+
+    <div class="grid">
+      <label><input type="checkbox" name="mar_manana"> Martes Mañana</label>
+      <label><input type="checkbox" name="mar_tarde"> Martes Tarde</label>
+
+      <label><input type="checkbox" name="jue_manana"> Jueves Mañana</label>
+      <label><input type="checkbox" name="jue_tarde"> Jueves Tarde</label>
+
+      <label><input type="checkbox" name="vie_manana"> Viernes Mañana</label>
+      <label><input type="checkbox" name="vie_tarde"> Viernes Tarde</label>
+
+      <label><input type="checkbox" name="sab_manana"> Sábado Mañana</label>
+
+      <label><input type="checkbox" name="dom_manana"> Domingo Mañana</label>
+    </div>
+
+    <button type="submit">Enviar disponibilidad</button>
+  </form>
+
+  <p id="mensaje"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
