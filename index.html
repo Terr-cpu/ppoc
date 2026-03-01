@@ -1,31 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Disponibilidad Anual</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disponibilidad Anual PPOC</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
+  <div class="wrapper">
+    
+    <header>
+      <h1>Disponibilidad 2026</h1>
+      <p class="subtitle">Indica tu disponibilidad habitual y añade semanas especiales si es necesario.</p>
+    </header>
 
-  <h1>Disponibilidad 2026</h1>
+    <section class="card">
+      <h2>Datos personales</h2>
+      <div class="form-group">
+        <input type="text" id="nombre" placeholder="Nombre completo" required />
+      </div>
+    </section>
 
-  <div class="card">
-    <h2>Disponibilidad habitual</h2>
-    <div class="grid" id="baseGrid"></div>
+    <section class="card">
+      <h2>Disponibilidad habitual</h2>
+      <div class="grid" id="baseGrid"></div>
+    </section>
+
+    <section class="card">
+      <div class="exception-header">
+        <h2>Semanas diferentes</h2>
+        <button class="link-btn" onclick="addException()">+ Añadir semana</button>
+      </div>
+      <div id="exceptionsContainer"></div>
+    </section>
+
+    <button class="primary-btn" onclick="submitForm()">Enviar disponibilidad</button>
+
+    <div id="toast"></div>
+
   </div>
 
-  <div class="card">
-    <h2>Semanas con disponibilidad distinta</h2>
-    <div id="exceptionsContainer"></div>
-    <button type="button" onclick="addException()">+ Añadir semana</button>
-  </div>
-
-  <button class="primary" onclick="enviar()">Enviar disponibilidad</button>
-
-</div>
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
