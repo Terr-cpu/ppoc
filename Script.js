@@ -1,88 +1,42 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzCJhZ4f9kBKWoIm-H05zuWe0RHkf1lUvOwXaAYYv30CXRRWEya8WEGj1Wlk6-McNRuEg/exec";
+// REEMPLAZA esta URL con la que te de Google Apps Script al publicar
+const APP_URL = "https://script.google.com/macros/s/AKfycbzCJhZ4f9kBKWoIm-H05zuWe0RHkf1lUvOwXaAYYv30CXRRWEya8WEGj1Wlk6-McNRuEg/exec";
+;
 
-const days = [
-  "Martes Mañana","Martes Tarde",
-  "Jueves Mañana","Jueves Tarde",
-  "Viernes Mañana","Viernes Tarde",
-  "Sábado Mañana","Domingo Mañana"
-];
+const form = document.getElementById('dispoForm');
+const btn = document.getElementById('btnSubmit');
+const feedback = document.getElementById('feedback');
 
-function createToggle(label, container){
-  const div=document.createElement("div");
-  div.className="toggle";
-  div.innerText=label;
-  div.onclick=()=>div.classList.toggle("active");
-  container.appendChild(div);
-}
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // UI de carga
+    btn.disabled = true;
+    btn.textContent = "Enviando...";
+    feedback.classList.remove('d-none', 'alert-success', 'alert-danger');
+    feedback.classList.add('alert', 'alert-info');
+    feedback.textContent = "Guardando en Google Sheets...";
 
-const baseGrid=document.getElementById("baseGrid");
-days.forEach(day=>createToggle(day,baseGrid));
+    const formData = new FormData(form);
 
-function addException(){
-  const container=document.getElementById("exceptionsContainer");
+    try {
+        const response = await fetch(APP_URL, {
+            method: 'POST',
+            body: formData
+        });
 
-  const wrapper=document.createElement("div");
-  wrapper.className="card";
-
-  const week=document.createElement("input");
-  week.type="week";
-  week.className="week-input";
-
-  const grid=document.createElement("div");
-  grid.className="availability-grid";
-
-  days.forEach(day=>createToggle(day,grid));
-
-  wrapper.appendChild(week);
-  wrapper.appendChild(grid);
-  container.appendChild(wrapper);
-}
-
-function submitForm(){
-  const nombre=document.getElementById("nombre").value.trim();
-  const email=document.getElementById("email").value.trim();
-
-  if(!nombre||!email){
-    showToast("Completa los datos personales");
-    return;
-  }
-
-  const base=[...document.querySelectorAll("#baseGrid .active")]
-    .map(el=>el.innerText);
-
-  const exceptions=[];
-  document.querySelectorAll("#exceptionsContainer .card")
-    .forEach(card=>{
-      const semana=card.querySelector(".week-input").value;
-      const disp=[...card.querySelectorAll(".active")]
-        .map(el=>el.innerText);
-      if(semana) exceptions.push({semana,disp});
-    });
-
-  const payload={
-    nombre,
-    email,
-    base,
-    exceptions
-  };
-
-  fetch(GAS_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify(payload)
-  })
-  .then(res=>res.json())
-  .then(()=>{
-    showToast("Disponibilidad enviada correctamente ✔");
-  })
-  .catch(()=>{
-    showToast("Error al enviar");
-  });
-}
-
-function showToast(msg){
-  const toast=document.getElementById("toast");
-  toast.innerText=msg;
-  toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),3000);
-}
+        if (response.ok) {
+            feedback.classList.replace('alert-info', 'alert-success');
+            feedback.textContent = "✅ ¡Enviado con éxito!";
+            form.reset();
+        } else {
+            throw new Error("Error en el servidor");
+        }
+    } catch (error) {
+        feedback.classList.replace('alert-info', 'alert-danger');
+        feedback.textContent = "❌ Error al enviar los datos.";
+        console.error(error);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "ENVIAR DISPONIBILIDAD";
+    }
+});
