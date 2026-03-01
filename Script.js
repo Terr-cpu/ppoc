@@ -1,5 +1,5 @@
 // REEMPLAZA esta URL con la que te de Google Apps Script al publicar
-const APP_URL = "https://script.google.com/macros/s/AKfycbzCJhZ4f9kBKWoIm-H05zuWe0RHkf1lUvOwXaAYYv30CXRRWEya8WEGj1Wlk6-McNRuEg/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbyXzJA1SGNIfHCLJHc_WI6tsEmKqULF2tpaiNDcvkzmWao6soyEkgCZ5niDUuoRSRSm/exec";
 ;
 
 const form = document.getElementById('dispoForm');
