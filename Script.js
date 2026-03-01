@@ -33,16 +33,20 @@ fetch(APP_URL, {
     },
     body: params.toString()
 })
-.then(response => response.text())
+.then(response => response.json())
 .then(data => {
-    console.log("Respuesta servidor:", data);
 
-    feedback.className = "mt-3 alert alert-success fw-bold";
-    feedback.textContent = "✅ ¡Disponibilidad enviada con éxito!";
-    form.reset();
+    if (data.status === "success") {
+        feedback.className = "mt-3 alert alert-success fw-bold";
+        feedback.textContent = "✅ ¡Disponibilidad enviada con éxito!";
+        form.reset();
+    } else {
+        throw new Error(data.message);
+    }
+
 })
 .catch(error => {
-    console.error(error);
+    console.error("Error real:", error);
     feedback.className = "mt-3 alert alert-danger";
     feedback.textContent = "❌ Error al enviar.";
 });
