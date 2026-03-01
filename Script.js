@@ -35,7 +35,6 @@ fetch(APP_URL, {
 })
 .then(response => response.json())
 .then(data => {
-
     if (data.status === "success") {
         feedback.className = "mt-3 alert alert-success fw-bold";
         feedback.textContent = "✅ ¡Disponibilidad enviada con éxito!";
