@@ -1,21 +1,26 @@
-const APP_URL = "https://script.google.com/macros/s/AKfycbyXzJA1SGNIfHCLJHc_WI6tsEmKqULF2tpaiNDcvkzmWao6soyEkgCZ5niDUuoRSRSm/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbyXzJA1SGNIfHCLJHc_WI6tsEmKqULF2tpaiNDcvkzmWao6soyEkgCZ5niDUuoRSRSm/exec"; // Pega aquí la URL de la nueva implementación
 
 const form = document.getElementById('dispoForm');
 const btn = document.getElementById('btnSubmit');
+const feedback = document.getElementById('feedback'); // Asegúrate que este ID existe en tu HTML
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    // Estado de carga
     btn.disabled = true;
     btn.textContent = "Enviando...";
+    feedback.className = "mt-3 alert alert-info";
+    feedback.textContent = "Procesando envío...";
+    feedback.classList.remove('d-none');
 
     const formData = new FormData(form);
     const params = new URLSearchParams();
     
-    // 1. Mapeamos el nombre (asegúrate que en HTML sea name="nombre")
+    // Mapeamos el nombre (asegúrate que en HTML el input sea name="nombre")
     params.append('nombre', formData.get('nombre'));
 
-    // 2. Mapeamos los Checkboxes (Si no está marcado, enviamos "NO")
+    // Lista de checkboxes
     const campos = ['Martes_M', 'Martes_T', 'Jueves_M', 'Jueves_T', 'Viernes_M', 'Viernes_T', 'Sabado_M', 'Domingo_M'];
     
     campos.forEach(campo => {
@@ -26,17 +31,23 @@ form.addEventListener('submit', async (e) => {
     try {
         await fetch(APP_URL, {
             method: 'POST',
-            mode: 'no-cors', 
+            mode: 'no-cors', // Necesario para Google Apps Script
+            cache: 'no-cache',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: params.toString()
         });
 
-        // Como no-cors no permite leer la respuesta, asumimos éxito tras el fetch
-        alert("✅ Disponibilidad enviada. Revisa tu Google Sheet en unos segundos.");
+        // MENSAJE DE ÉXITO
+        feedback.className = "mt-3 alert alert-success fw-bold";
+        feedback.textContent = "✅ ¡Disponibilidad enviada con éxito!";
         form.reset();
+        
+        // El mensaje desaparece tras 5 segundos
+        setTimeout(() => { feedback.classList.add('d-none'); }, 5000);
+
     } catch (error) {
-        console.error("Error:", error);
-        alert("❌ Error de conexión");
+        feedback.className = "mt-3 alert alert-danger";
+        feedback.textContent = "❌ Error al enviar. Inténtalo de nuevo.";
     } finally {
         btn.disabled = false;
         btn.textContent = "ENVIAR DISPONIBILIDAD";
