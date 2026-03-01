@@ -1,4 +1,4 @@
-const APP_URL = "https://script.google.com/macros/s/AKfycbyXzJA1SGNIfHCLJHc_WI6tsEmKqULF2tpaiNDcvkzmWao6soyEkgCZ5niDUuoRSRSm/exec"; // Pega aquí la URL de la nueva implementación
+const APP_URL = "https://script.google.com/macros/s/AKfycbxmoMhbbY6qN-rXdz5N8KFKZQLQbvaHIkUEZNPBFL4HBP0Jxn62SeRO058CqyENYQZE/exec"; // Pega aquí la URL de la nueva implementación
 
 const form = document.getElementById('dispoForm');
 const btn = document.getElementById('btnSubmit');
