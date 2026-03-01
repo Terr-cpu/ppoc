@@ -1,47 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Disponibilidad Anual PPOC</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Disponibilidad 2026 PPOC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fuente profesional -->
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <div class="wrapper">
-    
-    <header>
-      <h1>Disponibilidad 2026</h1>
-      <p class="subtitle">Indica tu disponibilidad habitual y añade semanas especiales si es necesario.</p>
-    </header>
+<div class="background"></div>
 
-    <section class="card">
-      <h2>Datos personales</h2>
-      <div class="form-group">
-        <input type="text" id="nombre" placeholder="Nombre completo" required />
-      </div>
-    </section>
+<div class="container">
 
-    <section class="card">
-      <h2>Disponibilidad habitual</h2>
-      <div class="grid" id="baseGrid"></div>
-    </section>
-
-    <section class="card">
-      <div class="exception-header">
-        <h2>Semanas diferentes</h2>
-        <button class="link-btn" onclick="addException()">+ Añadir semana</button>
-      </div>
-      <div id="exceptionsContainer"></div>
-    </section>
-
-    <button class="primary-btn" onclick="submitForm()">Enviar disponibilidad</button>
-
-    <div id="toast"></div>
-
+  <div class="header">
+    <h1>Disponibilidad 2026 PPOC</h1>
+    <p>Define tu disponibilidad habitual y añade semanas específicas si es necesario.</p>
   </div>
 
-  <script src="script.js"></script>
+  <div class="card">
+    <h2>Datos personales</h2>
+    <div class="form-group">
+      <input type="text" id="nombre" placeholder="Nombre completo" required>
+      <input type="email" id="email" placeholder="Correo electrónico" required>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Disponibilidad habitual</h2>
+    <div class="availability-grid" id="baseGrid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>Semanas diferentes</h2>
+      <button class="ghost-btn" onclick="addException()">+ Añadir semana</button>
+    </div>
+    <div id="exceptionsContainer"></div>
+  </div>
+
+  <button class="primary-btn" onclick="submitForm()">Enviar disponibilidad</button>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="app.js"></script>
 </body>
 </html>
