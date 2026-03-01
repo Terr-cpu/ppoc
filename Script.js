@@ -42,15 +42,13 @@ fetch(APP_URL, {
     } else {
         throw new Error(data.message);
     }
-
 })
 .catch(error => {
     console.error("Error real:", error);
     feedback.className = "mt-3 alert alert-danger";
     feedback.textContent = "❌ Error al enviar.";
-});
-    .finally(() => {
-        btn.disabled = false;
-        btn.textContent = "ENVIAR DISPONIBILIDAD";
-    });
+})
+.finally(() => {
+    btn.disabled = false;
+    btn.textContent = "ENVIAR DISPONIBILIDAD";
 });
