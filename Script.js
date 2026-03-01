@@ -1,4 +1,4 @@
-const APP_URL = "https://script.google.com/macros/s/AKfycbyXzJA1SGNIfHCLJHc_WI6tsEmKqULF2tpaiNDcvkzmWao6soyEkgCZ5niDUuoRSRSm/exec"; // Reemplaza con tu URL
+const APP_URL = "https://script.google.com/macros/s/AKfycbyXzJA1SGNIfHCLJHc_WI6tsEmKqULF2tpaiNDcvkzmWao6soyEkgCZ5niDUuoRSRSm/exec";
 
 const form = document.getElementById('dispoForm');
 const btn = document.getElementById('btnSubmit');
@@ -10,34 +10,33 @@ form.addEventListener('submit', async (e) => {
     btn.textContent = "Enviando...";
 
     const formData = new FormData(form);
-    const data = {};
+    const params = new URLSearchParams();
     
-    // Convertimos FormData a un objeto y manejamos los checkboxes
-    formData.forEach((value, key) => {
-        data[key] = value === "on" ? "SÍ" : value;
-    });
+    // 1. Mapeamos el nombre (asegúrate que en HTML sea name="nombre")
+    params.append('nombre', formData.get('nombre'));
 
-    // Añadimos explícitamente "NO" a los campos no marcados
+    // 2. Mapeamos los Checkboxes (Si no está marcado, enviamos "NO")
     const campos = ['Martes_M', 'Martes_T', 'Jueves_M', 'Jueves_T', 'Viernes_M', 'Viernes_T', 'Sabado_M', 'Domingo_M'];
+    
     campos.forEach(campo => {
-        if (!data[campo]) data[campo] = "NO";
+        const valor = formData.get(campo);
+        params.append(campo, valor === "on" ? "SÍ" : "NO");
     });
 
     try {
-        // Usamos URLSearchParams para que Apps Script lo reciba en e.parameter
-        const params = new URLSearchParams(data);
-        
         await fetch(APP_URL, {
             method: 'POST',
-            mode: 'no-cors', // Importante para evitar bloqueos de CORS
-            body: params
+            mode: 'no-cors', 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
         });
 
-        alert("✅ Disponibilidad enviada correctamente");
+        // Como no-cors no permite leer la respuesta, asumimos éxito tras el fetch
+        alert("✅ Disponibilidad enviada. Revisa tu Google Sheet en unos segundos.");
         form.reset();
     } catch (error) {
         console.error("Error:", error);
-        alert("❌ Hubo un error al enviar");
+        alert("❌ Error de conexión");
     } finally {
         btn.disabled = false;
         btn.textContent = "ENVIAR DISPONIBILIDAD";
