@@ -26,23 +26,26 @@ form.addEventListener('submit', (e) => {
     });
 
     // Usamos el método tradicional de envío para evitar problemas de CORS estrictos
-    fetch(APP_URL, {
-        method: 'POST',
-        mode: 'no-cors', 
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString()
-    })
-    .then(() => {
-        // Con no-cors, el 'then' siempre se ejecuta si la petición sale del navegador
-        feedback.className = "mt-3 alert alert-success fw-bold";
-        feedback.textContent = "✅ ¡Disponibilidad enviada con éxito!";
-        form.reset();
-        setTimeout(() => { feedback.classList.add('d-none'); }, 5000);
-    })
-    .catch(error => {
-        feedback.className = "mt-3 alert alert-danger";
-        feedback.textContent = "❌ Error al enviar. Revisa tu conexión.";
-    })
+fetch(APP_URL, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: params.toString()
+})
+.then(response => response.text())
+.then(data => {
+    console.log("Respuesta servidor:", data);
+
+    feedback.className = "mt-3 alert alert-success fw-bold";
+    feedback.textContent = "✅ ¡Disponibilidad enviada con éxito!";
+    form.reset();
+})
+.catch(error => {
+    console.error(error);
+    feedback.className = "mt-3 alert alert-danger";
+    feedback.textContent = "❌ Error al enviar.";
+});
     .finally(() => {
         btn.disabled = false;
         btn.textContent = "ENVIAR DISPONIBILIDAD";
