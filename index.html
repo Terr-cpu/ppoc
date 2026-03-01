@@ -1,53 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Disponibilidad 2026 PPOC</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Fuente profesional -->
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Disponibilidad Anual PPOC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .form-container { max-width: 800px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .table-availability th { background-color: #0d6efd; color: white; }
+        .checkbox-cell { text-align: center; cursor: pointer; }
+    </style>
 </head>
 <body>
 
-<div class="background"></div>
-
 <div class="container">
+    <div class="form-container shadow">
+        <h2 class="text-center mb-4">🗓️ Disponibilidad Anual PPOC</h2>
+        <p class="text-muted text-center">Indica los turnos en los que puedes participar habitualmente.</p>
+        
+        <form id="dispoForm">
+            <div class="mb-3">
+                <label class="form-label">Nombre Completo</label>
+                <input type="text" name="nombre" class="form-control" placeholder="Ej. Juan Pérez" required>
+            </div>
 
-  <div class="header">
-    <h1>Disponibilidad 2026 PPOC</h1>
-    <p>Define tu disponibilidad habitual y añade semanas específicas si es necesario.</p>
-  </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-availability">
+                    <thead>
+                        <tr>
+                            <th>Día</th>
+                            <th class="text-center">Mañana</th>
+                            <th class="text-center">Tarde</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Martes</td><td class="checkbox-cell"><input type="checkbox" name="Martes_M"></td><td class="checkbox-cell"><input type="checkbox" name="Martes_T"></td></tr>
+                        <tr><td>Jueves</td><td class="checkbox-cell"><input type="checkbox" name="Jueves_M"></td><td class="checkbox-cell"><input type="checkbox" name="Jueves_T"></td></tr>
+                        <tr><td>Viernes</td><td class="checkbox-cell"><input type="checkbox" name="Viernes_M"></td><td class="checkbox-cell"><input type="checkbox" name="Viernes_T"></td></tr>
+                        <tr class="table-light"><td>Sábado</td><td class="checkbox-cell"><input type="checkbox" name="Sabado_M"></td><td class="text-center text-muted">--</td></tr>
+                        <tr class="table-light"><td>Domingo</td><td class="checkbox-cell"><input type="checkbox" name="Domingo_M"></td><td class="text-center text-muted">--</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-  <div class="card">
-    <h2>Datos personales</h2>
-    <div class="form-group">
-      <input type="text" id="nombre" placeholder="Nombre completo" required>
-      <input type="email" id="email" placeholder="Correo electrónico" required>
+            <button type="submit" class="btn btn-primary w-100 mt-3" id="submitBtn">Enviar Disponibilidad</button>
+        </form>
+        <div id="mensaje" class="mt-3 text-center d-none"></div>
     </div>
-  </div>
-
-  <div class="card">
-    <h2>Disponibilidad habitual</h2>
-    <div class="availability-grid" id="baseGrid"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <h2>Semanas diferentes</h2>
-      <button class="ghost-btn" onclick="addException()">+ Añadir semana</button>
-    </div>
-    <div id="exceptionsContainer"></div>
-  </div>
-
-  <button class="primary-btn" onclick="submitForm()">Enviar disponibilidad</button>
-
 </div>
 
-<div id="toast"></div>
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzCJhZ4f9kBKWoIm-H05zuWe0RHkf1lUvOwXaAYYv30CXRRWEya8WEGj1Wlk6-McNRuEg/exec';
+    const form = document.getElementById('dispoForm');
 
-<script src="Script.js"></script>
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('mensaje').classList.remove('d-none');
+        document.getElementById('mensaje').innerText = "Enviando...";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                document.getElementById('mensaje').innerText = "✅ ¡Datos guardados correctamente!";
+                form.reset();
+                document.getElementById('submitBtn').disabled = false;
+            })
+            .catch(error => {
+                document.getElementById('mensaje').innerText = "❌ Error al enviar.";
+                console.error('Error!', error.message);
+            });
+    });
+</script>
 </body>
 </html>
